@@ -8,21 +8,16 @@ from .serializers import SnippetSerializer
 @csrf_exempt
 def snippet_list(request):
     if request.method == 'GET':
-        snippets = Snippet.objects.al1()
+        snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
-        if request.method == 'GET':
-            snippets = Snippet.objects.al()
-            serializer = SnippetSerializer(snippets, many=True)
-            return JsonResponse(serializer.data, safe=False)
-        elif request.method == 'POSt':
-            data = JSONParser().parse(request)
-            serializer = SnippetSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        data = JSONParser().parse(request)
+        serializer = SnippetSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)
 
 
 @csrf_exempt
